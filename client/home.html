@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<header>
+    <title>Sexy yay</title>
+    <style>
+        body {
+            background-color: #010101;
+            color: white;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+            border: solid 1px #fff;
+        }
+        ::-webkit-scrollbar {
+            width: 12px; 
+            
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ffffff;
+        }
+        #file-list {
+            position: fixed;
+            height: 80vh;
+            width: 80vw;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            top: 10vh;
+            left: 10vw;
+        }
+        #logout-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px;
+            background-color: #1f1f1f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #logout-button:hover {
+            background-color: #121212;
+        }
+        table {
+            width: 100%;    
+        }
+        th, td {
+            text-align: left;
+        }
+        td:hover {
+            cursor: pointer;
+            color: #b6b6b6;
+        }
+        th {
+            padding: 8px;
+            padding-bottom: 12px;
+            border: solid 1px #fff;
+        }
+        #fsize {
+            width: 20%;
+        }
+    </style>
+</header>
+<body>
+    <div id="file-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>File Name</th>
+                    <th id="fsize">File Size</th>
+                </tr>
+            </thead>
+            <tbody id="item-list">
+            </tbody>
+        </table>
+    </div>
+    <button id="logout-button" type="button">Logout</button>
+    <script>
+        function populateItemList(itemList, sizeList, hrefs) {
+            const itemListElement = document.getElementById('item-list');
+            itemList.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                const tdItem = document.createElement('td');
+                const tdFileSize = document.createElement('td');
+                tdItem.textContent = item;
+                tdFileSize.textContent = sizeList[index];
+
+                tr.appendChild(tdItem);
+                tr.appendChild(tdFileSize);
+
+                itemListElement.appendChild(tr);
+                tdItem.addEventListener("click", function(event) {
+                    window.location.href = hrefs[index];
+                })
+            });
+        }
+        let itemlist = [REPLACEMEWITHFILENAMES];
+        let sizelist = [REPLACEMEWITHFILESIZES];
+        let hrefs = [REPLACEMEWITHHREF];
+        populateItemList(itemlist, sizelist, hrefs);
+        function eraseCookie(name) {   
+            document.cookie = name+'=; Max-Age=-99999999;';  
+        }
+        document.getElementById("logout-button").addEventListener("click", function(event) {
+            //console.log("Yeah");
+            eraseCookie("auth");
+            window.location.href = "/";
+        })
+    </script>
+
+</body>

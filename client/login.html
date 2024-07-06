@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #000;
+            color: white;
+        }
+        .login-container {
+            background-color: #000;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border: solid 1px white;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            background-color: #000;
+            color: white;
+        }
+        .login-container input::placeholder {
+            color: rgb(128, 128, 128);
+        }
+        .login-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1f1f1f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #login-button {
+            border: solid 1px white;
+            background-color: black;
+        }
+        #login-button:hover {
+            background-color: rgb(10, 10, 10);
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form" action="/">
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button id="login-button" type="button">Login</button>
+        </form>
+    </div>
+    <script> 
+    function setCookie(name,value,days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days*24*60*60*1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    }
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+    function eraseCookie(name) {   
+        document.cookie = name+'=; Max-Age=-99999999;';  
+    }
+    eraseCookie("auth");
+    if (getCookie("username")) {
+        document.querySelector("body > div > form > input[type=text]:nth-child(1)").value = getCookie("username");
+    }
+
+    function trylogin() {
+        var username = document.querySelector("body > div > form > input[type=text]:nth-child(1)");
+        var password = document.querySelector("body > div > form > input[type=password]:nth-child(2)");
+        if (!username.value) {
+            username.setCustomValidity('ur username here?');
+        } else {
+            username.setCustomValidity('');
+        }
+        if (!password.value) {
+            password.setCustomValidity('enter password too?');
+        } else {
+            password.setCustomValidity('');
+        }
+        if (password.value && username.value) {
+            setCookie("username", username.value, 7);
+            setCookie("auth", password.value, 7);
+            window.location.href = "/home.html"
+        }
+    }
+
+    document.getElementById('login-button').addEventListener('click', trylogin)
+    document.querySelector("body").addEventListener("keydown", function(event){
+        if (event.keyCode === 13) {
+            trylogin();
+        } 
+    })
+    </script>
+</body>
+
+</html>
